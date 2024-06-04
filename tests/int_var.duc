@@ -1,0 +1,2 @@
+CREATE my_int 500
+PRINT my_int

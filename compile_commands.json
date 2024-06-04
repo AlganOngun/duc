@@ -1,0 +1,107 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu2x",
+      "-c",
+      "-o",
+      "build/lexer.o",
+      "src/lexer.c"
+    ],
+    "directory": "/home/alganarch/Projects/interpreter",
+    "file": "/home/alganarch/Projects/interpreter/src/lexer.c",
+    "output": "/home/alganarch/Projects/interpreter/build/lexer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu2x",
+      "-c",
+      "-o",
+      "build/ast.o",
+      "src/ast.c"
+    ],
+    "directory": "/home/alganarch/Projects/interpreter",
+    "file": "/home/alganarch/Projects/interpreter/src/ast.c",
+    "output": "/home/alganarch/Projects/interpreter/build/ast.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu2x",
+      "-c",
+      "-o",
+      "build/parser.o",
+      "src/parser.c"
+    ],
+    "directory": "/home/alganarch/Projects/interpreter",
+    "file": "/home/alganarch/Projects/interpreter/src/parser.c",
+    "output": "/home/alganarch/Projects/interpreter/build/parser.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu2x",
+      "-c",
+      "-o",
+      "build/interpreter.o",
+      "src/interpreter.c"
+    ],
+    "directory": "/home/alganarch/Projects/interpreter",
+    "file": "/home/alganarch/Projects/interpreter/src/interpreter.c",
+    "output": "/home/alganarch/Projects/interpreter/build/interpreter.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu2x",
+      "-c",
+      "-o",
+      "build/scope_table.o",
+      "src/scope_table.c"
+    ],
+    "directory": "/home/alganarch/Projects/interpreter",
+    "file": "/home/alganarch/Projects/interpreter/src/scope_table.c",
+    "output": "/home/alganarch/Projects/interpreter/build/scope_table.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu2x",
+      "-c",
+      "-o",
+      "build/symbol_table.o",
+      "src/symbol_table.c"
+    ],
+    "directory": "/home/alganarch/Projects/interpreter",
+    "file": "/home/alganarch/Projects/interpreter/src/symbol_table.c",
+    "output": "/home/alganarch/Projects/interpreter/build/symbol_table.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu2x",
+      "-c",
+      "-o",
+      "build/commands.o",
+      "src/commands.c"
+    ],
+    "directory": "/home/alganarch/Projects/interpreter",
+    "file": "/home/alganarch/Projects/interpreter/src/commands.c",
+    "output": "/home/alganarch/Projects/interpreter/build/commands.o"
+  }
+]

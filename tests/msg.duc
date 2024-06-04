@@ -1,0 +1,2 @@
+CREATE msg |This is a message by "msg" variable|
+PRINT msg

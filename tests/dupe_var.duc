@@ -1,0 +1,4 @@
+CREATE dupe_identifier 500
+CREATE dupe_identifier 2300
+
+PRINT dupe_identifier

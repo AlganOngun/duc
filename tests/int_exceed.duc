@@ -1,0 +1,2 @@
+CREATE too_big_int 922337203685477580789
+PRINT too_big_int

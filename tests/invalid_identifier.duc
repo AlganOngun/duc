@@ -1,0 +1,3 @@
+# Invalid because an identifier can not start with digits
+CREATE 134invalid |My Invalid Identifier Value|
+PRINT 134invalid

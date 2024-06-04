@@ -1,0 +1,9 @@
+./interpreter tests/hello_world.duc
+./interpreter tests/int_print.duc
+./interpreter tests/int_var.duc
+./interpreter tests/msg.duc
+./interpreter tests/dupe_var.duc
+./interpreter tests/int_exceed.duc
+./interpreter tests/invalid_identifier.duc
+./interpreter tests/set.duc
+./interpreter tests/swap.duc

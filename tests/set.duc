@@ -1,0 +1,10 @@
+CREATE my_var 500
+
+PRINT |my_var:|
+PRINT my_var
+
+# Change the value of my_var
+SET my_var 1896
+
+PRINT |After setting my_var:|
+PRINT my_var
