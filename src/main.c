@@ -49,6 +49,8 @@ int main(int argc, const char *argv[])
 	command_register(cb, "CREATE", command_func_create);
 	command_register(cb, "SET", command_func_set);
 
+	subcommand_register(cb, "ADD", subcommand_func_add);
+
 	struct lexer *lexer = lexer_create(file_content, cb);
 
 	struct ast_node *ast = parse_tokens(lexer);

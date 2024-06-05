@@ -12,4 +12,7 @@ void command_func_print(struct ast_node *command_node,
 void command_func_set(struct ast_node *command_node,
 		      struct symbol_table *sym_table, struct error **err);
 
+void subcommand_func_add(struct ast_node *command_node,
+			 struct symbol_table *sym_table, struct error **err);
+
 #endif

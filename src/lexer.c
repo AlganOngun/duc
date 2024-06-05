@@ -106,6 +106,11 @@ static struct token create_command_or_identifier_token(struct lexer *lexer)
 				       .value = value,
 				       .line = lexer->line,
 				       .column = lexer->column - len };
+	} else if (subcommand_exists(lexer->cb, value)) {
+		return (struct token){ .type = TOKEN_SUBCOMMAND,
+				       .value = value,
+				       .line = lexer->line,
+				       .column = lexer->column - len };
 	} else {
 		return (struct token){ .type = TOKEN_IDENTIFIER,
 				       .value = value,

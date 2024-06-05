@@ -130,6 +130,12 @@ void command_func_set(struct ast_node *command_node,
 			    err);
 }
 
+void subcommand_func_add(struct ast_node *command_node,
+			 struct symbol_table *sym_table, struct error **err)
+{
+	printf("ADD Called\n");
+}
+
 static struct symbol *get_sym(struct symbol_table *sym_table, struct token tok,
 			      struct error **err)
 {

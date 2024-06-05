@@ -1,25 +1,3 @@
-CREATE msg |HI|
-CREATE another_msg |HOO HOO|
-
-PRINT |BEFORE SWAP:|
-
-PRINT |msg:|
-PRINT msg
-
-PRINT |another_msg:|
-PRINT another_msg
-
-# Swap the variables
-CREATE tmp ||
-SET tmp msg
-SET msg another_msg
-SET another_msg tmp
-
-PRINT |===============|
-PRINT |AFTER SWAP:|
-
-PRINT |msg:|
-PRINT msg
-
-PRINT |another_msg:|
-PRINT another_msg
+CREATE var 50
+SET var ADD var 500
+PRINT var

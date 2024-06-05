@@ -30,18 +30,37 @@ void ast_add_arg(struct ast_node *node, struct ast_node *arg)
 	node->args[node->argc++] = arg;
 }
 
-void ast_print(const struct ast_node *const node, int level)
+static void ast_print_impl(const struct ast_node *const node, int level,
+			   bool last)
 {
 	if (!node)
 		return;
 
-	for (int i = 0; i < level; ++i) {
-		printf("  ");
+	// Print the tree structure
+	for (int i = 0; i < level - 1; ++i) {
+		printf("│   ");
 	}
+
+	if (level > 0) {
+		if (last) {
+			printf("└── ");
+		} else {
+			printf("├── ");
+		}
+	}
+
+	// Print the node value
 	printf("%s\n", node->tok.value ? node->tok.value : "NULL");
+
+	// Recursively print children nodes
 	for (size_t i = 0; i < node->argc; ++i) {
-		ast_print(node->args[i], level + 1);
+		ast_print_impl(node->args[i], level + 1, i == node->argc - 1);
 	}
+}
+
+void ast_print(const struct ast_node *const root)
+{
+	ast_print_impl(root, 0, true);
 }
 
 void ast_free(struct ast_node *node)
