@@ -1,4 +1,4 @@
-:i count 9
+:i count 12
 :b shell 35
 ./interpreter tests/hello_world.duc
 :i returncode 0
@@ -84,6 +84,31 @@ msg:
 HOO HOO
 another_msg:
 HI
+
+:b stderr 0
+
+:b shell 34
+./interpreter tests/simple_add.duc
+:i returncode 0
+:b stdout 4
+450
+
+:b stderr 0
+
+:b shell 36
+./interpreter tests/advanced_add.duc
+:i returncode 0
+:b stdout 12
+sum + 10
+25
+
+:b stderr 0
+
+:b shell 39
+./interpreter tests/deep_nested_add.duc
+:i returncode 0
+:b stdout 4
+350
 
 :b stderr 0
 

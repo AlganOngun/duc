@@ -13,6 +13,7 @@ typedef void (*command_func)(struct ast_node *command_node,
 
 struct command {
 	const char *command_name;
+	size_t max_argc;
 	command_func func;
 };
 
@@ -29,14 +30,17 @@ struct command_base {
 struct command_base *command_base_create();
 
 void command_register(struct command_base *cb, const char *name,
-		      command_func func);
+		      command_func func, size_t max_argc);
 void subcommand_register(struct command_base *cb, const char *name,
-			 command_func func);
+			 command_func func, size_t max_argc);
 
 void command_exec(struct command_base *cb, struct ast_node *command_node,
 		  struct symbol_table *sym_table, struct error **err);
 
 bool command_exists(struct command_base *cb, const char *name);
 bool subcommand_exists(struct command_base *cb, const char *name);
+
+struct command command_get(struct command_base *cb, const char *name);
+struct command subcommand_get(struct command_base *cb, const char *name);
 
 #endif

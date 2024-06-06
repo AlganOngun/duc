@@ -30,10 +30,16 @@ struct lexer *lexer_create(const char *source, struct command_base *cb)
 	lexer->current_char = lexer->source[0];
 	lexer->cb = cb;
 
+	// Initialize previous state fields
+	lexer->prev_pos = lexer->pos;
+	lexer->prev_line = lexer->line;
+	lexer->prev_column = lexer->column;
+	lexer->prev_char = lexer->current_char;
+
 	return lexer;
 }
 
-void lexer_advance(struct lexer *lexer)
+static void lexer_advance(struct lexer *lexer)
 {
 	if (lexer->current_char == '\n') {
 		lexer->line++;
@@ -58,6 +64,14 @@ static void skip_comment(struct lexer *lexer)
 	lexer_advance(lexer); // To move past the newline character
 }
 
+void lexer_retreat(struct lexer *lexer)
+{
+	lexer->pos = lexer->prev_pos;
+	lexer->line = lexer->prev_line;
+	lexer->column = lexer->prev_column;
+	lexer->current_char = lexer->prev_char;
+}
+
 struct token lexer_next_token(struct lexer *lexer, struct error **err)
 {
 	while (lexer->current_char != '\0') {
@@ -65,6 +79,12 @@ struct token lexer_next_token(struct lexer *lexer, struct error **err)
 			skip_comment(lexer);
 			continue;
 		}
+
+		// Save current state before moving on with the next token
+		lexer->prev_pos = lexer->pos;
+		lexer->prev_line = lexer->line;
+		lexer->prev_column = lexer->column;
+		lexer->prev_char = lexer->current_char;
 
 		if (isdigit(lexer->current_char)) {
 			return create_int(lexer, err);
@@ -82,7 +102,9 @@ struct token lexer_next_token(struct lexer *lexer, struct error **err)
 		lexer_advance(lexer);
 	}
 
-	return (struct token){ .type = TOKEN_EOF, .value = NULL };
+	return (struct token){ .type = TOKEN_EOF,
+			       .value = NULL,
+			       .max_argc = 0 };
 }
 
 static struct token create_command_or_identifier_token(struct lexer *lexer)
@@ -102,20 +124,25 @@ static struct token create_command_or_identifier_token(struct lexer *lexer)
 	value[len] = '\0';
 
 	if (command_exists(lexer->cb, value)) {
+		struct command c = command_get(lexer->cb, value);
 		return (struct token){ .type = TOKEN_COMMAND,
 				       .value = value,
 				       .line = lexer->line,
-				       .column = lexer->column - len };
+				       .column = lexer->column - len,
+				       .max_argc = c.max_argc };
 	} else if (subcommand_exists(lexer->cb, value)) {
+		struct command c = subcommand_get(lexer->cb, value);
 		return (struct token){ .type = TOKEN_SUBCOMMAND,
 				       .value = value,
 				       .line = lexer->line,
-				       .column = lexer->column - len };
+				       .column = lexer->column - len,
+				       .max_argc = c.max_argc };
 	} else {
 		return (struct token){ .type = TOKEN_IDENTIFIER,
 				       .value = value,
 				       .line = lexer->line,
-				       .column = lexer->column - len };
+				       .column = lexer->column - len,
+				       .max_argc = 0 };
 	}
 }
 
@@ -130,12 +157,11 @@ static struct token create_int(struct lexer *lexer, struct error **err)
 				    lexer->line, lexer->column,
 				    "Invalid identifier starting with a digit");
 
-		return (struct token){
-			.type = TOKEN_INVALID_IDENTIFIER,
-			.value = "",
-			.line = lexer->line,
-			.column = lexer->column,
-		};
+		return (struct token){ .type = TOKEN_INVALID_IDENTIFIER,
+				       .value = "",
+				       .line = lexer->line,
+				       .column = lexer->column,
+				       .max_argc = 0 };
 	}
 
 	size_t len = lexer->pos - start_pos;
@@ -149,7 +175,8 @@ static struct token create_int(struct lexer *lexer, struct error **err)
 	return (struct token){ .type = TOKEN_INT,
 			       .value = value,
 			       .line = lexer->line,
-			       .column = lexer->column - len };
+			       .column = lexer->column - len,
+			       .max_argc = 0 };
 }
 
 static struct token create_str(struct lexer *lexer, struct error **err)
@@ -163,7 +190,8 @@ static struct token create_str(struct lexer *lexer, struct error **err)
 				lexer->column,
 				"Unexpected end of file while scanning string literal");
 			return (struct token){ .type = TOKEN_EOF,
-					       .value = NULL };
+					       .value = NULL,
+					       .max_argc = 0 };
 		}
 		lexer_advance(lexer);
 	}
@@ -180,7 +208,8 @@ static struct token create_str(struct lexer *lexer, struct error **err)
 	return (struct token){ .type = TOKEN_STR,
 			       .value = value,
 			       .line = lexer->line,
-			       .column = lexer->column - len };
+			       .column = lexer->column - len,
+			       .max_argc = 0 };
 }
 
 void lexer_destroy(struct lexer *lexer)

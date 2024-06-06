@@ -1,3 +1,11 @@
-CREATE var 50
-SET var ADD var 500
-PRINT var
+# Create two variables and initialize them
+CREATE x 500
+CREATE y 6893
+
+# Sum them and initialize a variable with sum of them
+CREATE sum ADD x y
+
+# PRINT the value
+PRINT sum
+
+# Expected result is 7393

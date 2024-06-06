@@ -10,8 +10,6 @@
 
 static void resize_commands(struct command_base *cb);
 static void resize_subcommands(struct command_base *cb);
-static struct command get_command(struct command_base *cb, const char *name);
-static struct command get_subcommand(struct command_base *cb, const char *name);
 
 struct command_base *command_base_create()
 {
@@ -35,7 +33,7 @@ struct command_base *command_base_create()
 }
 
 void command_register(struct command_base *cb, const char *name,
-		      command_func func)
+		      command_func func, size_t max_argc)
 {
 	if (cb->commands_length >= cb->commands_allocated) {
 		resize_commands(cb);
@@ -43,11 +41,12 @@ void command_register(struct command_base *cb, const char *name,
 
 	cb->commands[cb->commands_length].command_name = name;
 	cb->commands[cb->commands_length].func = func;
+	cb->commands[cb->commands_length].max_argc = max_argc;
 	++cb->commands_length;
 }
 
 void subcommand_register(struct command_base *cb, const char *name,
-			 command_func func)
+			 command_func func, size_t max_argc)
 {
 	if (cb->subcommands_length >= cb->subcommands_allocated) {
 		resize_subcommands(cb);
@@ -55,6 +54,7 @@ void subcommand_register(struct command_base *cb, const char *name,
 
 	cb->subcommands[cb->subcommands_length].command_name = name;
 	cb->subcommands[cb->subcommands_length].func = func;
+	cb->subcommands[cb->subcommands_length].max_argc = max_argc;
 	++cb->subcommands_length;
 }
 
@@ -78,11 +78,16 @@ static void resize_subcommands(struct command_base *cb)
 void command_exec(struct command_base *cb, struct ast_node *command_node,
 		  struct symbol_table *sym_table, struct error **err)
 {
-	struct command c = get_command(cb, command_node->tok.value);
+	struct command c;
+	if (command_node->tok.type == TOKEN_COMMAND) {
+		c = command_get(cb, command_node->tok.value);
+	} else if (command_node->tok.type == TOKEN_SUBCOMMAND) {
+		c = subcommand_get(cb, command_node->tok.value);
+	}
 	c.func(command_node, sym_table, err);
 }
 
-static struct command get_command(struct command_base *cb, const char *name)
+struct command command_get(struct command_base *cb, const char *name)
 {
 	for (size_t i = 0; i < cb->commands_length; ++i) {
 		if (strcmp(cb->commands[i].command_name, name) == 0) {
@@ -92,7 +97,7 @@ static struct command get_command(struct command_base *cb, const char *name)
 	return (struct command){ .command_name = "" };
 }
 
-static struct command get_subcommand(struct command_base *cb, const char *name)
+struct command subcommand_get(struct command_base *cb, const char *name)
 {
 	for (size_t i = 0; i < cb->subcommands_length; ++i) {
 		if (strcmp(cb->subcommands[i].command_name, name) == 0) {
@@ -104,10 +109,10 @@ static struct command get_subcommand(struct command_base *cb, const char *name)
 
 bool command_exists(struct command_base *cb, const char *name)
 {
-	return strcmp(get_command(cb, name).command_name, "") != 0;
+	return strcmp(command_get(cb, name).command_name, "") != 0;
 }
 
 bool subcommand_exists(struct command_base *cb, const char *name)
 {
-	return strcmp(get_subcommand(cb, name).command_name, "") != 0;
+	return strcmp(subcommand_get(cb, name).command_name, "") != 0;
 }

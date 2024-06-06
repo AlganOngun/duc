@@ -45,11 +45,11 @@ int main(int argc, const char *argv[])
 	char *file_content = read_file_to_str(filename);
 
 	struct command_base *cb = command_base_create();
-	command_register(cb, "PRINT", command_func_print);
-	command_register(cb, "CREATE", command_func_create);
-	command_register(cb, "SET", command_func_set);
+	command_register(cb, "PRINT", command_func_print, 1);
+	command_register(cb, "CREATE", command_func_create, 2);
+	command_register(cb, "SET", command_func_set, 2);
 
-	subcommand_register(cb, "ADD", subcommand_func_add);
+	subcommand_register(cb, "ADD", subcommand_func_add, 2);
 
 	struct lexer *lexer = lexer_create(file_content, cb);
 

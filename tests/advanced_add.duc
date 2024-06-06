@@ -1,0 +1,12 @@
+# Create Two variables and initialize them
+CREATE x 5
+CREATE y 10
+
+# Add them together
+CREATE sum 0 		# Create a variable for sum
+SET sum ADD x y		# SET sum to x + y
+
+PRINT |sum + 10|
+PRINT ADD sum 10 	# First add 10 to sum (sum + 10) then PRINT it.
+
+# The final output should be: 25
