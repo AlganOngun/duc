@@ -1,0 +1,11 @@
+# Create two variables and initialize them
+CREATE x 156
+CREATE y 17
+
+# Subtract them and initialize a variable with difference of them
+CREATE difference SUB x y
+
+# PRINT the value
+PRINT difference
+
+# Expected result is 139

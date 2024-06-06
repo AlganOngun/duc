@@ -1,4 +1,4 @@
-:i count 12
+:i count 15
 :b shell 35
 ./interpreter tests/hello_world.duc
 :i returncode 0
@@ -109,6 +109,30 @@ sum + 10
 :i returncode 0
 :b stdout 4
 350
+
+:b stderr 0
+
+:b shell 38
+./interpreter tests/multiplication.duc
+:i returncode 0
+:b stdout 5
+1924
+
+:b stderr 0
+
+:b shell 35
+./interpreter tests/subtraction.duc
+:i returncode 0
+:b stdout 4
+139
+
+:b stderr 0
+
+:b shell 32
+./interpreter tests/division.duc
+:i returncode 0
+:b stdout 3
+20
 
 :b stderr 0
 

@@ -1,0 +1,11 @@
+# Create two variables and initialize them
+CREATE x 52
+CREATE y 37
+
+# Multiply them and initialize a variable with product of them
+CREATE product MUL x y
+
+# PRINT the value
+PRINT product
+
+# Expected result is 1924

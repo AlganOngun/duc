@@ -25,6 +25,7 @@ static struct sym_val_data tok_to_sym_val(struct symbol_table *sym_table,
 					  struct error **err);
 static struct symbol *get_sym(struct symbol_table *sym_table,
 			      const struct token tok, struct error **err);
+static int do_arithmetic(struct token tok, int x, int y);
 
 void command_func_create(struct ast_node *command_node,
 			 struct symbol_table *sym_table, struct error **err)
@@ -79,8 +80,9 @@ void command_func_set(struct ast_node *command_node,
 		err);
 }
 
-void subcommand_func_add(struct ast_node *command_node,
-			 struct symbol_table *sym_table, struct error **err)
+void subcommand_func_arithmetic(struct ast_node *command_node,
+				struct symbol_table *sym_table,
+				struct error **err)
 {
 	struct token tok = {
 		.type = TOKEN_INT,
@@ -98,7 +100,9 @@ void subcommand_func_add(struct ast_node *command_node,
 
 	if (left_val.type == SYMBOL_INT) {
 		if (right_val.type == SYMBOL_INT) {
-			int sum = left_val.val.int_val + right_val.val.int_val;
+			int sum = do_arithmetic(command_node->tok,
+						left_val.val.int_val,
+						right_val.val.int_val);
 			char *str = int_to_str(sum);
 			assert(strcmp(str, "") != 0);
 
@@ -110,6 +114,23 @@ void subcommand_func_add(struct ast_node *command_node,
 	ast_delete_node(command_node);
 	command_node = ast_node_create(tok);
 	ast_add_arg(parent, command_node);
+}
+
+static int do_arithmetic(struct token tok, int x, int y)
+{
+	if (strcmp(tok.value, "ADD") == 0) {
+		return x + y;
+	}
+	if (strcmp(tok.value, "SUB") == 0) {
+		return x - y;
+	}
+	if (strcmp(tok.value, "MUL") == 0) {
+		return x * y;
+	}
+	if (strcmp(tok.value, "DIV") == 0) {
+		return x / y;
+	}
+	return -1;
 }
 
 static struct symbol *get_sym(struct symbol_table *sym_table,

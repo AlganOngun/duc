@@ -10,3 +10,6 @@
 ./interpreter tests/simple_add.duc
 ./interpreter tests/advanced_add.duc
 ./interpreter tests/deep_nested_add.duc
+./interpreter tests/multiplication.duc
+./interpreter tests/subtraction.duc
+./interpreter tests/division.duc

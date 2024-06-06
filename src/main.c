@@ -49,7 +49,10 @@ int main(int argc, const char *argv[])
 	command_register(cb, "CREATE", command_func_create, 2);
 	command_register(cb, "SET", command_func_set, 2);
 
-	subcommand_register(cb, "ADD", subcommand_func_add, 2);
+	subcommand_register(cb, "ADD", subcommand_func_arithmetic, 2);
+	subcommand_register(cb, "SUB", subcommand_func_arithmetic, 2);
+	subcommand_register(cb, "MUL", subcommand_func_arithmetic, 2);
+	subcommand_register(cb, "DIV", subcommand_func_arithmetic, 2);
 
 	struct lexer *lexer = lexer_create(file_content, cb);
 
