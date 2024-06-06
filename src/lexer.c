@@ -30,12 +30,6 @@ struct lexer *lexer_create(const char *source, struct command_base *cb)
 	lexer->current_char = lexer->source[0];
 	lexer->cb = cb;
 
-	// Initialize previous state fields
-	lexer->prev_pos = lexer->pos;
-	lexer->prev_line = lexer->line;
-	lexer->prev_column = lexer->column;
-	lexer->prev_char = lexer->current_char;
-
 	return lexer;
 }
 
@@ -71,12 +65,6 @@ struct token lexer_next_token(struct lexer *lexer, struct error **err)
 			skip_comment(lexer);
 			continue;
 		}
-
-		// Save current state before moving on with the next token
-		lexer->prev_pos = lexer->pos;
-		lexer->prev_line = lexer->line;
-		lexer->prev_column = lexer->column;
-		lexer->prev_char = lexer->current_char;
 
 		if (isdigit(lexer->current_char)) {
 			return create_int(lexer, err);
