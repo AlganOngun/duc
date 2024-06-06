@@ -33,17 +33,10 @@ struct lexer {
 	char current_char;
 
 	struct command_base *cb;
-
-	// Additional fields for tracking lexer state
-	size_t prev_pos;
-	int prev_line;
-	int prev_column;
-	char prev_char;
 };
 
 struct lexer *lexer_create(const char *source, struct command_base *cb);
 struct token lexer_next_token(struct lexer *lexer, struct error **err);
-void lexer_retreat(struct lexer *lexer);
 
 void lexer_destroy(struct lexer *lexer);
 void token_destroy(struct token *token);

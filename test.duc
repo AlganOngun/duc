@@ -1,11 +1,1 @@
-# Create two variables and initialize them
-CREATE x 180
-CREATE y 9
-
-# Divide them and initialize a variable with quotient of them
-CREATE quotient DIV x y
-
-# PRINT the value
-PRINT quotient
-
-# Expected result is 20
+PRINT MUL ADD 2 2 3

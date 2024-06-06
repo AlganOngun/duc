@@ -64,14 +64,6 @@ static void skip_comment(struct lexer *lexer)
 	lexer_advance(lexer); // To move past the newline character
 }
 
-void lexer_retreat(struct lexer *lexer)
-{
-	lexer->pos = lexer->prev_pos;
-	lexer->line = lexer->prev_line;
-	lexer->column = lexer->prev_column;
-	lexer->current_char = lexer->prev_char;
-}
-
 struct token lexer_next_token(struct lexer *lexer, struct error **err)
 {
 	while (lexer->current_char != '\0') {
