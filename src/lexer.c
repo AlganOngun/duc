@@ -66,7 +66,8 @@ struct token lexer_next_token(struct lexer *lexer, struct error **err)
 			continue;
 		}
 
-		if (isdigit(lexer->current_char)) {
+		if (isdigit(lexer->current_char) ||
+		    lexer->current_char == '-') {
 			return create_int(lexer, err);
 		}
 		if (lexer->current_char == '|') {
@@ -129,6 +130,8 @@ static struct token create_command_or_identifier_token(struct lexer *lexer)
 static struct token create_int(struct lexer *lexer, struct error **err)
 {
 	size_t start_pos = lexer->pos;
+	lexer_advance(lexer);
+
 	while (isdigit(lexer->source[lexer->pos])) {
 		lexer_advance(lexer);
 	}

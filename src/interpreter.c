@@ -8,7 +8,7 @@ static enum EXT_CODE eval_subcommands(struct ast_node *command_node,
 				      struct command_base *cb,
 				      struct symbol_table *symbol_table)
 {
-	for (size_t i = 0; i < command_node->argc; ++i) {
+	for (int i = command_node->argc - 1; i >= 0; --i) {
 		if (command_node->args[i]->tok.type == TOKEN_SUBCOMMAND) {
 			enum EXT_CODE result = eval_subcommands(
 				command_node->args[i], cb, symbol_table);

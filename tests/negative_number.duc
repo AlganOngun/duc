@@ -1,0 +1,2 @@
+CREATE negative_num -12534682
+PRINT negative_num

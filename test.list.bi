@@ -1,4 +1,4 @@
-:i count 15
+:i count 16
 :b shell 35
 ./interpreter tests/hello_world.duc
 :i returncode 0
@@ -133,6 +133,14 @@ sum + 10
 :i returncode 0
 :b stdout 3
 20
+
+:b stderr 0
+
+:b shell 42
+./interpreter tests/complex_arithmetic.duc
+:i returncode 0
+:b stdout 6
+-5015
 
 :b stderr 0
 
