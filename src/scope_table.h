@@ -7,11 +7,13 @@ struct error;
 
 enum SYMBOL_TYPE {
 	SYMBOL_INT,
+	SYMBOL_DOUBLE,
 	SYMBOL_STR,
 };
 
 union symbol_val {
 	int int_val;
+	double double_val;
 	char *str_val;
 };
 

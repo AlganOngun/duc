@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 static struct token create_command_or_identifier_token(struct lexer *lexer);
-static struct token create_int(struct lexer *lexer, struct error **err);
+static struct token create_number(struct lexer *lexer, struct error **err);
 static struct token create_str(struct lexer *lexer, struct error **err);
 static void skip_comment(struct lexer *lexer);
 
@@ -67,8 +67,8 @@ struct token lexer_next_token(struct lexer *lexer, struct error **err)
 		}
 
 		if (isdigit(lexer->current_char) ||
-		    lexer->current_char == '-') {
-			return create_int(lexer, err);
+		    lexer->current_char == '-' || lexer->current_char == '.') {
+			return create_number(lexer, err);
 		}
 		if (lexer->current_char == '|') {
 			return create_str(lexer, err);
@@ -127,12 +127,18 @@ static struct token create_command_or_identifier_token(struct lexer *lexer)
 	}
 }
 
-static struct token create_int(struct lexer *lexer, struct error **err)
+static struct token create_number(struct lexer *lexer, struct error **err)
 {
 	size_t start_pos = lexer->pos;
+	bool start_with_dot = lexer->source[start_pos] == '.';
+	bool is_double = start_with_dot;
 	lexer_advance(lexer);
 
-	while (isdigit(lexer->source[lexer->pos])) {
+	while (isdigit(lexer->source[lexer->pos]) ||
+	       lexer->source[lexer->pos] == '.') {
+		if (lexer->source[lexer->pos] == '.') {
+			is_double = true;
+		}
 		lexer_advance(lexer);
 	}
 	if (isalpha(lexer->source[lexer->pos])) {
@@ -148,14 +154,29 @@ static struct token create_int(struct lexer *lexer, struct error **err)
 	}
 
 	size_t len = lexer->pos - start_pos;
+	if (start_with_dot)
+		len = lexer->pos - start_pos + 1; // +1 for the 0 at start
 
 	char *value = malloc(len + 1);
 	assert(value != NULL);
 
-	strncpy(value, lexer->source + start_pos, len);
+	if (start_with_dot)
+		strncpy(value + 1, lexer->source + start_pos,
+			len); // +1 so it skips the first character which will be 0
+	else
+		strncpy(value, lexer->source + start_pos, len);
 	value[len] = '\0';
 
-	return (struct token){ .type = TOKEN_INT,
+	if (start_with_dot)
+		value[0] = '0';
+
+	enum TOKEN_TYPE tok_type;
+	if (is_double)
+		tok_type = TOKEN_DOUBLE;
+	else
+		tok_type = TOKEN_INT;
+
+	return (struct token){ .type = tok_type,
 			       .value = value,
 			       .line = lexer->line,
 			       .column = lexer->column - len,

@@ -184,6 +184,11 @@ void scope_table_print(struct scope_table *table)
 					       node->identifier,
 					       node->value.int_val);
 				}
+				if (node->type == SYMBOL_DOUBLE) {
+					printf("  Key: %s, Value: %f\n",
+					       node->identifier,
+					       node->value.double_val);
+				}
 				if (node->type == SYMBOL_STR) {
 					printf("  Key: %s, Value: %s\n",
 					       node->identifier,

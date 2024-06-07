@@ -1,4 +1,4 @@
-:i count 16
+:i count 20
 :b shell 35
 ./interpreter tests/hello_world.duc
 :i returncode 0
@@ -141,6 +141,39 @@ sum + 10
 :i returncode 0
 :b stdout 6
 -5015
+
+:b stderr 0
+
+:b shell 39
+./interpreter tests/negative_number.duc
+:i returncode 0
+:b stdout 10
+-12534682
+
+:b stderr 0
+
+:b shell 49
+./interpreter tests/complex_arithmetic_double.duc
+:i returncode 0
+:b stdout 10
+31.000000
+
+:b stderr 0
+
+:b shell 30
+./interpreter tests/double.duc
+:i returncode 0
+:b stdout 14
+0.56837
+24.65
+
+:b stderr 0
+
+:b shell 38
+./interpreter tests/double_int_div.duc
+:i returncode 0
+:b stdout 11
+-24.000000
 
 :b stderr 0
 

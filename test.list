@@ -14,3 +14,7 @@
 ./interpreter tests/subtraction.duc
 ./interpreter tests/division.duc
 ./interpreter tests/complex_arithmetic.duc
+./interpreter tests/negative_number.duc
+./interpreter tests/complex_arithmetic_double.duc
+./interpreter tests/double.duc
+./interpreter tests/double_int_div.duc

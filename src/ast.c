@@ -28,7 +28,8 @@ void ast_add_arg(struct ast_node *node, struct ast_node *arg)
 		return;
 
 	node->args = new_args;
-	node->args[node->argc++] = arg;
+	node->args[node->argc] = arg;
+	++node->argc;
 	arg->parent = node;
 }
 
